@@ -1,26 +1,26 @@
-import socket
-import sys
+# Libs
+import json
 
-sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+# Classes
+from model import Model
+from view import View
+from controller import Controller
 
-server_address = ('', 69)
-sock.bind(server_address)
+# Main function to launch entire app
+def main():
 
-sock.listen(1)
-print('ctrl+c to stop')
+    with open('config.json', 'r') as file:
+        config = json.load()
 
-while True:
-    connection, cl_address = sock.accept()
-    try:
-        print('Connect to: ', cl_address)
-        while True:
-            data = connection.recv(16)
-            print(f'Пол.: {data.decode}')
-            if data:
-                data = data.upper()
-                connection.sendall(data)
-            else:
-                print('Данные жок: ', cl_address)
-                break
-    finally:
-        connection.close()
+    controller = Controller( 
+        name=config['default_name']
+    )
+
+    controller.setup_chat()
+
+    pass
+
+
+# If this file is main, then launch app
+if __name__ == "__main__":
+    main()
