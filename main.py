@@ -10,7 +10,7 @@ from controller import Controller
 def main():
 
     with open('config.json', 'r') as file:
-        config = json.load()
+        config = json.load(file)
 
     controller = Controller( 
         name=config['default_name']
