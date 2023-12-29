@@ -18,7 +18,7 @@ class Controller:
     def create_chat():
         pass
 
-    def delete_chat():
+    def remove_chat():
         pass
 
     def slash_commands():
