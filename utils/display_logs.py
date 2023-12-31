@@ -1,6 +1,7 @@
 # Imports
 from colorama import just_fix_windows_console
 from termcolor import colored
+from datetime import datetime
 
 # Class
 class DisplayLogs():
@@ -8,7 +9,12 @@ class DisplayLogs():
     A class for displaying standardized logs in the console with predefined types like INFO, WARNING, ERROR, SUCCESS.
 
     Requires the colorama and termcolor libraries for proper functionality.
+
+    Args:
+        logging (bool): Save logs into "./log" folder
     """
+
+    logging: bool = True
 
     def __init__(self) -> None:
         """Initialize the DisplayLogs class."""
@@ -39,6 +45,15 @@ class DisplayLogs():
         # Print message if needed
         if is_print:
             print(result)
+
+        # Save message to logs if it's allowed
+        if self.logging:
+            filename = datetime.now().strftime('%Y-%m-%d-logs')
+            log_time = datetime.now().strftime('%H:%M:%S:%f')
+            log = f"{log_time} : [ {type} ] {msg}"
+            
+            with open(f'./logs/{filename}.txt', 'a', encoding='utf-8') as file:
+                file.write(log + '\n')
 
         return result
 
@@ -93,3 +108,16 @@ class DisplayLogs():
             str: Converted, standartized message for logging in both console and log files.
         """
         return self.message(msg, "green", "SUCCESS", is_print)
+    
+    def launch(self, msg = "Application is starting up", is_print = True) -> str:
+        """
+        Displays launch log
+        
+        Args:
+            msg (str) : Main message to display.
+            is_print (bool) : Is there a need to print it in console automatically?
+
+        Returns:
+            str: Converted, standartized message for logging in both console and log files.
+        """
+        return self.message(msg, "light_green", "LAUNCH", is_print)
