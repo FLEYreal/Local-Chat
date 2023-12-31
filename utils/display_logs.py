@@ -2,6 +2,7 @@
 from colorama import just_fix_windows_console
 from termcolor import colored
 from datetime import datetime
+import os
 
 # Class
 class DisplayLogs():
@@ -48,11 +49,21 @@ class DisplayLogs():
 
         # Save message to logs if it's allowed
         if self.logging:
-            filename = datetime.now().strftime('%Y-%m-%d-logs')
+
+            # Define folder & file names
+            dirname = 'logs'
+            filename = datetime.now().strftime(f'%Y-%m-%d-{dirname}')
+
+            # Create folder in the case it doesn't exist
+            if not os.path.isdir(dirname):
+                os.mkdir(dirname)
+
+            # Formatting logs
             log_time = datetime.now().strftime('%H:%M:%S:%f')
             log = f"{log_time} : [ {type} ] {msg}"
             
-            with open(f'./logs/{filename}.txt', 'a', encoding='utf-8') as file:
+            # Create file if not exist or add new content to existing file
+            with open(f'./{dirname}/{filename}.txt', 'a', encoding='utf-8') as file:
                 file.write(log + '\n')
 
         return result
