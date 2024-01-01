@@ -39,34 +39,38 @@ class DisplayLogs():
             log_msg = display.message("This is an example message", color="blue", type="CUSTOM", is_print=True)
         """
 
-        # Convert message
-        tag = colored(type, color)
-        result = f"[ {tag} ] {msg}"
+        try:
+            # Convert message
+            tag = colored(type, color)
+            result = f"[ {tag} ] {msg}"
 
-        # Print message if needed
-        if is_print:
-            print(result)
+            # Print message if needed
+            if is_print:
+                print(result)
 
-        # Save message to logs if it's allowed
-        if self.logging:
+            # Save message to logs if it's allowed
+            if self.logging:
 
-            # Define folder & file names
-            dirname = 'logs'
-            filename = datetime.now().strftime(f'%Y-%m-%d-{dirname}')
+                # Define folder & file names
+                dirname = 'logs'
+                filename = datetime.now().strftime(f'%Y-%m-%d-{dirname}')
 
-            # Create folder in the case it doesn't exist
-            if not os.path.isdir(dirname):
-                os.mkdir(dirname)
+                # Create folder in the case it doesn't exist
+                if not os.path.isdir(dirname):
+                    os.mkdir(dirname)
 
-            # Formatting logs
-            log_time = datetime.now().strftime('%H:%M:%S:%f')
-            log = f"{log_time} : [ {type} ] {msg}"
-            
-            # Create file if not exist or add new content to existing file
-            with open(f'./{dirname}/{filename}.txt', 'a', encoding='utf-8') as file:
-                file.write(log + '\n')
+                # Formatting logs
+                log_time = datetime.now().strftime('%H:%M:%S:%f')
+                log = f"{log_time} : [ {type} ] {msg}"
+                
+                # Create file if not exist or add new content to existing file
+                with open(f'./{dirname}/{filename}.txt', 'a', encoding='utf-8') as file:
+                    file.write(log + '\n')
 
-        return result
+            return result
+
+        except Exception as e:
+            print('[ Log Error ] Error happened while creating logs: ', e)
 
     def info(self, msg = "<Info Message Undefined>", is_print = True) -> str:
         """
