@@ -3,9 +3,11 @@ import socket
 from utils.display_logs import DisplayLogs
 import select
 
+
 # Setup
 log = DisplayLogs()
 log.__init__()
+
 
 # Class
 class Server:
@@ -27,7 +29,7 @@ class Server:
         self.host = host
         self.header_length = header_length
 
-    def create_server(self, return_server: bool = False) -> None:
+    def create(self, return_server: bool = False) -> None:
         """
             This method creates a socket, binds it to the host provided in "host" variable and starts listening to new connections with method "self.listen".
 
@@ -60,7 +62,7 @@ class Server:
                 return server
         
         except Exception as e:
-            log.error('Error on Server.create_server() : ', e)
+            log.error('Error on Server.create() : ', e)
             return False
 
     def delete_server(self) -> None:
@@ -88,6 +90,7 @@ class Server:
             length = int(header.decode('UTF-8').strip())
 
             # If all's good, return standartized object
+            log.success('Received message from client!')
             return {
                 'header': header,
                 'data': client.recv(length)
@@ -110,12 +113,12 @@ class Server:
         try:
 
             if server == False:
-                raise Exception('Provided server equals "False" which most times implies that error happened on Server.create_server(). It also means that Server.listen() returns False as well!')
+                raise Exception('Provided server equals "False" which most times implies that error happened on Server.create(). It also means that Server.listen() returns False as well!')
 
             while True:
 
                 # Create waiting list
-                rlist, _, xlist = select.select()
+                rlist, _, xlist = select.select(self.sockets_list, [], self.sockets_list)
 
                 # Parse ready list
                 for _socket in rlist:
@@ -135,7 +138,7 @@ class Server:
                         self.clients_dict[client] = data
                         
                         # Print received data
-                        print(data)
+                        log.info(data)
 
         except Exception as e:
             log.error('Error on Server.listen() : ', e)

@@ -8,4 +8,4 @@ log.launch()
 
 # Experimenting
 server = Socks().server()
-server.listen()
+server.create()

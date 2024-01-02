@@ -1,4 +1,6 @@
 {
     "view": "console",
-    "default_name": "Guest"
+    "username": "Guest",
+    "server_port": 5005,
+    "header_length": 16
 }
