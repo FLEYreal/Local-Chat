@@ -1,11 +1,31 @@
 # Imports
-from socks import Socks
+from socks import Server, Client
 from utils.display_logs import DisplayLogs
 
 # Logging
 log = DisplayLogs()
 log.launch()
 
-# Experimenting
-server = Socks().server()
-server.create()
+# Data
+username = input('What\'s your username? : ')
+is_host = input('Be a host of the chat / Connect to existing chat ? : (1 / 2)')
+
+if is_host == "1":
+    server = Server(
+        username=username,
+        header_length=256
+    )
+    server.create()
+
+if is_host == "2":
+
+    ip = input('What\'s IP?')
+    port = input('What\'s Port?')
+
+    client = Client(
+        username=username,
+        header_length=256,
+        host=(ip, port)
+    )
+
+    client.connect()
