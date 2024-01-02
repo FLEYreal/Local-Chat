@@ -35,28 +35,23 @@ class Client:
 
             # Create client
             client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-            print('Dicks Alive 1 ', self.host)
-
             client.connect(self.host)
-
-            print('Dicks Alive 2')
 
             # Setup
             client.setblocking(0)
 
-            print('Dicks Alive 3')
+            # Data to send to the server
+            data = {
+                "type": "join", # Types: "Join" | "Send" | "Leave"
+                "username": self.username,
+                "message": f"{self.username} has entered the chat."
+            }
             
             # Create header
-            header = f"{len(self.username):<{self.header_length}}".encode('UTF-8')
-
-            print('header:', header)
-            print('username:', self.username)
-
-            print(header+self.username.encode('UTF-8'))
+            header = f"{len(str(data)):<{self.header_length}}".encode('UTF-8')
 
             # Send content
-            client.send(header+self.username.encode('UTF-8'))
+            client.send(header+str(data).encode('UTF-8'))
         
         except Exception as e:
             log.error('Error on Client.connect() : ', )

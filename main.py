@@ -18,12 +18,11 @@ if is_host == "1":
 
 if is_host == "2":
 
-    ip = input('What\'s IP? : ')
-    port = input('What\'s Port? : ')
+    ip = input('What\'s host IP? : ')
 
     client = Client(
         username=username,
-        host=(ip, int(port))
+        host=(ip, 5005)
     )
 
     client.connect()
