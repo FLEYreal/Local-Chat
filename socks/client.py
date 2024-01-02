@@ -32,7 +32,6 @@ class Client:
 
         try:
 
-
             # Create client
             client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             client.connect(self.host)

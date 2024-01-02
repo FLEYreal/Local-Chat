@@ -1,7 +1,8 @@
 # Imports
 import socket
-from utils.display_logs import DisplayLogs
 import select
+import ast
+from utils.display_logs import DisplayLogs
 
 
 # Setup
@@ -91,9 +92,13 @@ class Server:
 
             # If all's good, return standartized object
             log.success('Received message from client!')
+
+            # Get data and transform it into dictionary
+            data = ast.literal_eval(client.recv(length).decode('UTF-8'))
+
             return {
                 'header': header,
-                'data': client.recv(length)
+                'data': data
             }
         
         except Exception as e:
