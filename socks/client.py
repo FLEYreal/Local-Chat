@@ -41,6 +41,9 @@ class Client:
             # Create header
             header = f"{len(self.username):<{self.header_length}}".encode('UTF-8')
 
+            print('header:', header)
+            print('username:', self.username)
+
             print(header+self.username.encode('UTF-8'))
 
             # Send content
