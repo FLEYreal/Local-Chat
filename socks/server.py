@@ -22,7 +22,7 @@ class Server:
     def __init__(
             self,
             username = "Guest",
-            host = ('localhost', 5005),
+            host = ('0.0.0.0', 5005),
             header_length = 16
     ) -> None:
         self.username = username
