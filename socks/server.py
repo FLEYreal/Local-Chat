@@ -2,6 +2,7 @@
 import socket
 import select
 import ast
+from colorama import Fore
 from utils.display_logs import DisplayLogs
 
 
@@ -63,7 +64,7 @@ class Server:
                 return server
         
         except Exception as e:
-            log.error('Error on Server.create() : ', e)
+            log.error(f'Error on Server.create() : {e}')
             return False
 
     def delete_server(self) -> None:
@@ -90,9 +91,6 @@ class Server:
             # Get provided length
             length = int(header.decode('UTF-8').strip())
 
-            # If all's good, return standartized object
-            log.success('Received message from client!')
-
             # Get data and transform it into dictionary
             data = ast.literal_eval(client.recv(length).decode('UTF-8'))
 
@@ -102,7 +100,7 @@ class Server:
             }
         
         except Exception as e:
-            log.error('Error on Server.receive() : ', e)
+            log.error(f'Error on Server.receive() : {e}')
             return False
 
     def listen(self, server: socket.socket) -> None:
@@ -134,17 +132,23 @@ class Server:
                         client, address = server.accept()
 
                         # Receive user's data
-                        data = self.receive(client)
-                        if not data:
+                        response = self.receive(client)
+                        if not response:
                             continue
 
                         # Save data
                         self.sockets_list.append(client)
-                        self.clients_dict[client] = data
+                        self.clients_dict[client] = response
                         
-                        # Print received data
-                        log.info(data)
+                        # Get data from response
+                        header, data = response
+
+                        if data["type"] == 'send' or data["type"] == 'leave':
+                            print(data['message'])
+
+                        elif data["type"] == 'send':
+                            print(f'{self.username} {Fore.BLACK}:{Fore.RESET} {data["message"]}')
 
         except Exception as e:
-            log.error('Error on Server.listen() : ', e)
+            log.error(f'Error on Server.listen() : {e}')
             return False
